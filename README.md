@@ -36,22 +36,30 @@ This image makes certain assumptions:
 
 ## Options
 
+Some option examples vary based on the host OS in use:
+ 
+ - B2D: Mac/Windows (using [boot2docker-vagrant](https://github.com/blinkreaction/boot2docker-vagrant))
+ - Linux
 
 ### Mounting SSH keys
 
-SSH keys can be mounted into the container. This will allow you to access remote servers with Drush.
+SSH keys can be mounted into the container (by mounting the home directory from the host).  
+This will allow you to access remote servers with Drush.
 
-**Mac/Windows** (using [boot2docker-vagrant](https://github.com/blinkreaction/boot2docker-vagrant))
+Add `-v /.home:/.home` for **BD2** or `-v $(echo ~):/.home` for **Linux** to the docker command call:
 
-Add `-v /.home/.ssh:/.ssh` to the docker command call:
+    B2D: docker run --rm -v $(pwd):/var/www -v /.home:/.home blinkreaction/drush
+    Linux: docker run --rm -v $(pwd):/var/www -v $(echo ~):/.home blinkreaction/drush
 
-    docker run --rm -v $(pwd):/var/www -v /.home/.ssh:/.ssh blinkreaction/drush
 
-**Linux**
+## Custom SSH key name
 
-Add `$(echo ~/.ssh):/.ssh` to the docker command call:
+Specify a custom SSH RSA key name if necessary. Defaults to `id_rsa`.
 
-    docker run --rm -v $(pwd):/var/www -v $(echo ~/.ssh):/.ssh blinkreaction/drush
+Add `-e SSH_KEY_NAME=<key_name>` to the docker command call:
+
+    B2D: docker run --rm -v /.home:/.home -e SSH_KEY_NAME=id_rsa blinkreaction/drush
+    Linux: docker run --rm -v $(echo ~):/.home -e SSH_KEY_NAME=id_rsa blinkreaction/drush
 
 
 ### Acquia Cloud API credentials
@@ -63,22 +71,10 @@ Add `--email="<email>" --key="<key> ac-site-list"` to the docker command call:
     docker run --rm -v $(pwd):/var/www blinkreaction/drush \
     --email="<email>" --key="<key> ac-site-list
 
-If you have the `~/.acquia/cloudapi.conf` credentials file, it can mounted into the container
+If you have the `~/.acquia/cloudapi.conf` credentials file,  
+it can be mounted into the container (by mounting the home directory from the host).
 
-**Mac/Windows** (using [boot2docker-vagrant](https://github.com/blinkreaction/boot2docker-vagrant))
-
-Add `-v /.home/.acquia:/root/.acquia` to the docker command call:
-
-
-    docker run --rm -v $(pwd):/var/www -v /.home/.acquia:/root/.acquia \
-    blinkreaction/drush ac-site-list
-
-**Linux**
-
-Add `-v $(echo ~/.acquia):/root/.acquia` to the docker command call:
-
-    docker run --rm -v $(pwd):/var/www -v $(echo ~/.acquia):/root/.acquia \
-    blinkreaction/drush ac-site-list
+    Follow instructions for Mounting SSH keys.
 
 
 ### Custom Drupal root directory name
@@ -86,7 +82,7 @@ Add `-v $(echo ~/.acquia):/root/.acquia` to the docker command call:
 If your Drupal root directory is called something other than `docroot`,  
 you can override it in the docker command call with `-w /var/www/<drupal_root>`
 
-    docker run --rm -v $(pwd):/var/www -w /var/www/htdocs blinkreaction/drush --version
+    docker run --rm -v $(pwd):/var/www -w /var/www/htdocs blinkreaction/drush
 
 ### Debuggin (bash access)
 
