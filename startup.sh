@@ -28,7 +28,7 @@ copy_dot_acquia ()
   fi
 }
 
-# Copy settings from host
+# Copy Drush settings from host
 # @param $1 path to the home directory (parent of the .drush directory)
 copy_dot_drush ()
 {

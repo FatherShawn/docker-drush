@@ -43,7 +43,7 @@ Some option examples vary based on the host OS in use:
 
 ### Mounting SSH keys
 
-SSH keys can be mounted into the container (by mounting the home directory from the host).  
+SSH keys can be mounted into the container by mounting the home directory from the host.  
 This will allow you to access remote servers with Drush.
 
 Add `-v /.home:/.home` for **BD2** or `-v $(echo ~):/.home` for **Linux** to the docker command call:
@@ -72,7 +72,14 @@ Add `--email="<email>" --key="<key> ac-site-list"` to the docker command call:
     --email="<email>" --key="<key> ac-site-list
 
 If you have the `~/.acquia/cloudapi.conf` credentials file,  
-it can be mounted into the container (by mounting the home directory from the host).
+it can be mounted into the container by mounting the home directory from the host.
+
+    Follow instructions for Mounting SSH keys.
+
+
+### Host Drush settings
+
+Drush settings (~/.drush) can be mounted into the container by mounting the home directory from the host.
 
     Follow instructions for Mounting SSH keys.
 
